@@ -1,0 +1,164 @@
+模块 1
+
+Part 1 — Basic EDA（你已经完成，但可以补充 2–3 个关键图）
+
+你已经有：
+
+DC/AC 随时间的分布图（很好）
+
+各逆变器的 DC/AC 箱型图（很好）
+
+建议补充：
+
+① IRRADIATION（辐照度）随时间趋势图
+
+说明天气条件对产出影响
+这是所有 KPI 的基础。
+
+② MODULE_TEMPERATURE / AMBIENT_TEMPERATURE 随时间趋势图
+
+用于后面做热衰减、温差效应、设备异常
+
+③ DC_POWER vs IRRADIATION 散点图（太阳能板的 I-V 行为）
+
+用于展示 DC 和辐照的线性关系。
+
+Part 2 — PR / KPI Calculation（这部分非常关键，你还没做）
+要让 EDA 变成真正专业的数据分析，必须加入业务 KPI：
+① Performance Ratio (PR)
+
+PR 是太阳能电站最核心 KPI：
+
+PR = AC_POWER / (IRRADIATION × PANEL_AREA × PANEL_EFFICIENCY)
+
+⚠ Kaggle 数据没有 panel area → 你可以使用 Normalized PR：
+
+NPR = AC_POWER / IRRADIATION
+
+你可以计算：
+
+每日 PR
+
+每小时 PR
+
+各逆变器 PR 分布
+
+这些是实际可用于识别性能下降的。
+
+② Capacity Utilization Factor (CUF)
+CUF = (Daily AC Energy) / (Installed Capacity × 24)
+
+
+可以比较不同天的 performance。
+
+③ Inverter Efficiency（你已经做了！）
+EFF = AC_POWER / DC_POWER
+
+加上：
+
+per inverter
+
+per hour
+
+per day（rolling mean）
+
+你已经做得很好，但可以增加：
+
+➡ “逆变器效率长期趋势图（rolling 7 days）”
+可以看到老化。
+
+Part 3 — Inverter-Level Fault Detection（你已经做，但可以补充关键内容）
+
+你已经有：
+
+各逆变器效率箱型图
+
+per-hour 效率棋盘式图
+
+各逆变器 DC/AC 分布图
+
+这些图非常好！
+
+但是还缺 3 个“核心诊断”。
+
+① 哪些逆变器 consistently 弱？（箱型图的实际分析）
+
+你可以加一句总结：
+
+某几个逆变器 efficiency median 明显低 → 怀疑性能下降
+
+某几个逆变器 outlier 多 → 怀疑波动异常
+
+某些逆变器 per-hour curve 向下偏移 → 热衰减 or 容量下降
+
+加 2–3 条业务解读，你的图就变成“分析”而不是“画图”。
+
+② 逆变器离线时间区间检测（DC/AC=0 连续区间）
+
+用 groupby + run-length encoding：
+
+df['offline'] = df['AC_POWER'] == 0
+
+
+找出连续 AC=0 的 time windows
+→ 直接标记逆变器停机、掉线。
+
+③ 各逆变器的 daily energy 输出（bar plot）
+daily_energy = df.groupby(['SOURCE_KEY', 'date'])['AC_POWER'].sum()
+
+
+你会看到：
+
+某些逆变器每天 consistently 输出更低 → 老化
+
+某天突然下降 → 故障
+
+🔥 这样你的“逆变器级故障检测”就变成一个完整分析而不是箱型图堆积。
+
+📌 Part 4 — Temperature / Soiling / Missing Data 分析（你还没有，但容易补）
+🔥 这是你的 EDA 模块中最重要、最能展示 domain knowledge 的部分。
+
+你现在有逆变器效率 per hour，但还差一些关键图。
+
+① Temperature vs DC Power（热衰减分析）
+
+散点图：
+
+sns.scatterplot(x='MODULE_TEMPERATURE', y='DC_POWER')
+
+
+你会看到：
+
+温度越高，DC 越下降 → 真实物理效应
+
+某逆变器对温度“异常敏感” → 热衰减问题
+
+② Temperature delta（模块 - 环境）随时间分析
+df['TEMP_DELTA'] = df['MODULE_TEMPERATURE'] - df['AMBIENT_TEMPERATURE']
+
+
+正常：+25～35°C
+
+偏离：
+
+太低 → 传感器坏
+
+太高 → 热斑（长期会毁掉组件）
+
+③ Soiling Loss（脏污损失）检测
+soiling_index = DC_POWER / IRRADIATION
+
+
+→ 画随时间下降趋势
+→ 下降表示表面灰尘积累
+→ 下雨那天会“跳回去”（洗干净）
+
+这非常真实、非常专业。
+
+④ Missing Data Analysis（你已经发现 19–20 号温度缺失，要扩展）
+
+制作 heatmap：
+
+df.pivot(index='date', columns='SOURCE_KEY', values='MODULE_TEMPERATURE').isnull()
+
+直接显示哪几天、哪几个逆变器传感器失效。
