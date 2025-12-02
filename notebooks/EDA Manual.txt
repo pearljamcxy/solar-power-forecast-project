@@ -113,10 +113,10 @@ daily_energy = df.groupby(['SOURCE_KEY', 'date'])['AC_POWER'].sum()
 
 某天突然下降 → 故障
 
-🔥 这样你的“逆变器级故障检测”就变成一个完整分析而不是箱型图堆积。
+这样你的“逆变器级故障检测”就变成一个完整分析而不是箱型图堆积。
 
-📌 Part 4 — Temperature / Soiling / Missing Data 分析（你还没有，但容易补）
-🔥 这是你的 EDA 模块中最重要、最能展示 domain knowledge 的部分。
+Part 4 — Temperature / Soiling / Missing Data 分析（你还没有，但容易补）
+这是你的 EDA 模块中最重要、最能展示 domain knowledge 的部分。
 
 你现在有逆变器效率 per hour，但还差一些关键图。
 
