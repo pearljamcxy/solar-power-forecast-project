@@ -1,0 +1,14 @@
+Module 2 transforms traditional KPI-based monitoring into a diagnostic and predictive framework.
+By constructing Expected DC/AC and tracking deviations, we can:
+
+・Detect inverter faults
+
+・Quantify economic losses
+
+・Observe long-term degradation
+
+・Prioritize maintenance actions
+
+・Provide real, actionable insights for operational teams
+
+This module forms the foundation for advanced ML techniques in Module 3, such as anomaly detection and time-series forecasting.
