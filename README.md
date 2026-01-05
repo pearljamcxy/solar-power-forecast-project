@@ -1,65 +1,60 @@
-## 1️⃣ 激活虚拟环境（每次开始工作时执行）
+# Solar Power Forecast Project
 
-cd E:\solar-power-forecast-project
-venv\Scripts\Activate
+This repository presents a solar power generation forecasting project built with Python.
+The objective of this project is to predict solar power output using historical environmental and meteorological data through time-series analysis and machine learning methods.
 
-出现：
-(venv) PS E:\solar-power-forecast-project>
-## 2️⃣ 打开 VS Code（在虚拟环境激活状态下执行）
+Accurate solar power forecasting plays an important role in renewable energy systems. It helps mitigate the inherent variability of solar generation and supports grid scheduling and energy management decisions.
 
-code .
-请确保 VS Code 使用当前 venv 的 Python 解释器。
+## Project Overview
 
-## 3️⃣ 开发工作说明（notebooks / src / api）
+Solar power generation is influenced by multiple external factors, including solar irradiance, weather conditions, and atmospheric variables. As a result, the data exhibits strong variability and seasonal patterns.
+By constructing predictive models, future power generation can be estimated at different time horizons, contributing to improved planning and operational efficiency in energy systems.
 
-- notebooks/          → EDA、特征工程、模型训练  
-- src/                → data_loader、feature_engineering、model_utils  
-- api/                → FastAPI 接口文件  
-- data/raw/           → 原始数据（不会上传 GitHub）  
-- data/processed/     → 处理后数据（不会上传 GitHub）
+This project covers a complete workflow from exploratory data analysis and feature engineering to model training and evaluation. It also includes an optional API example for simple model deployment.
 
-随时可查看更改：
+## Project Structure
 
-git status
+The repository is organized to reflect the end-to-end forecasting pipeline:
 
-## 4️⃣ 添加全部更改
+notebooks/
+Contains multiple Jupyter Notebooks documenting the full analysis and modeling process, including:
 
-git add .
+- Exploratory data analysis (EDA) of raw solar power data
 
-## 5️⃣ 提交更改（写清楚内容）
+- Data cleaning and preprocessing
 
-git commit -m "你的说明，例如：Add EDA notebook"
+- Feature engineering and feature selection
 
-## 6️⃣ 推送到 GitHub（同步 main 分支）
+- Training and evaluation of forecasting models
 
-git push（因为已设置 tracking，之后都只需这一个命令）
+## Analysis and Modeling Workflow
 
-## 7️⃣ 安装新库并更新 requirements.txt
+The project follows the steps below:
 
-安装新库：pip install 库名
+1. **Data Loading and Preparation**
+Load historical solar power generation data along with relevant environmental and meteorological features.
 
-更新依赖：
+2. **Exploratory Data Analysis (EDA)**
+Analyze data distributions, missing values, seasonal patterns, and correlations among features.
 
-pip freeze > requirements.txt
+3. **Feature Engineering**
+Construct time-based features and core physical features to help models capture temporal and domain-specific patterns.
 
-## 8️⃣ 退出虚拟环境（结束一天工作）
+4. **Model Training and Selection**
+Train multiple forecasting models using the processed dataset, including:
 
-deactivate
+- Baseline models (e.g., Linear Regression)
 
-## 9️⃣ 若未来遇到 GitHub 推送冲突（极少发生）
+- Machine learning models (e.g., XGBoost)
+Model performance is evaluated using metrics such as MAE, RMSE, and R².
 
-### ✔ 若想保留 GitHub 中的更改：
-git pull
+5. **Model Evaluation and Comparison**
+Compare model performance across different forecast horizons to analyze strengths and limitations.
 
-### ✔ 若本地为主，覆盖 GitHub：
-git push --force
+## Key Findings
 
-# 🎉 每天开发流程总结
+- The project demonstrates performance differences among various models for solar power forecasting tasks.
 
-激活 venv  
-→ code .  
-→ 写代码  
-→ git add  
-→ git commit  
-→ git push  
-→ deactivate（可选）
+- Proper data preprocessing and feature engineering significantly improve prediction accuracy compared to simple baseline models.
+
+- Models capable of capturing nonlinear relationships show more stable performance in short-term and medium-term forecasts.
